@@ -82,7 +82,12 @@ class App:
 
     
     def notationToLocation(self,notation:str):
+
         from_ = notation[:2]
+
+        if len(notation) == 2:
+            return (8 - int(from_[1]),ord(from_[0])-ord('a')), None
+            
         to_ = notation[3:]
 
         from_ = (8 - int(from_[1]),ord(from_[0])-ord('a'))
@@ -91,6 +96,8 @@ class App:
         return (from_,to_)
     
     def Move(self):
+
+        
         from_ , to_ = self.notationToLocation(self.moveEntry.get().strip())
 
         types = {
@@ -99,8 +106,13 @@ class App:
             6:King(self.turn)
         }
 
-        piece = types[self.board.array[from_[0]][from_[1]]]
-        if to_ in piece.getPossibleMoves(self.board,from_):
+        piece = types[abs(self.board.array[from_[0]][from_[1]])]
+
+        if len(self.moveEntry.get()) == 2:
+            self.highLightMovesForPiece(piece.getPossibleMoves(self.board,from_),from_)
+            return
+
+        elif to_ in piece.getPossibleMoves(self.board,from_):
             self.board.array[to_[0]][to_[1]] = self.board.array[from_[0]][from_[1]]
             self.board.array[from_[0]][from_[1]] = 0
         
@@ -109,15 +121,19 @@ class App:
 
         self.board.prntBoard()
 
+        self.turn = 'black' if self.turn == 'white' else 'white'
+
 
         
 
-    def highLightMovesForPiece(self,moves):
+    def highLightMovesForPiece(self,moves,location):
 
         self.canvasBody.delete('all')
         self.drawBoard(self.board)
+
+        self.canvasBody.create_rectangle(60*location[1],60*location[0],60*location[1]+60,60*location[0]+60,fill='green',stipple='gray50',outline='green')
         for move in moves:
-            self.canvasBody.create_rectangle(60*move[1],60*move[0],60*move[1]+60,60*move[0]+60,fill='red',stipple='gray50',outline='green')
+            self.canvasBody.create_rectangle(60*move[1],60*move[0],60*move[1]+60,60*move[0]+60,fill='red',stipple='gray50',outline='red')
 
 
     def drawBoard(self,Board):
@@ -166,8 +182,6 @@ class App:
 board = Board()
 
 game = App(board)
-
-
 
 
 game.run()

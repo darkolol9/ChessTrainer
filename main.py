@@ -119,12 +119,13 @@ board = Board()
 
 game = App(board)
 
-board.array[3][3] = 2
+board.array[5][5] = 2
 game.drawBoard(board)
-possibleMoves = Knight('white').getPossibleMoves(board,(3,3))
+possibleMoves = Knight('white').getPossibleMoves(board,(5,5))
 game.highLightMovesForPiece(possibleMoves)
 
-
+# which videos, why are u not studying?????
+# kobi kuzi........
 
 game.run()
 

@@ -108,6 +108,73 @@ class Knight:
 
 
         return result
+
+
+class King:
+    def __init__(self,team) -> None:
+        self.team = team
+
+    def getPossibleMoves(self,board,location):
+        result = []
+
+
+        up = (location[0]-1,location[1])
+
+        if up[0] in range(0,8):
+            if up[1] in range(0,8):
+                if board.array[up[0]][up[1]]* board.array[location[0]][location[1]] <= 0:
+                    result.append(up)
+
+        down = (location[0]+1,location[1])
+
+        if down[0] in range(0,8):
+            if down[1] in range(0,8):
+                if board.array[down[0]][down[1]]* board.array[location[0]][location[1]] <= 0:
+                    result.append(down)
+
+        left = (location[0],location[1] - 1)
+
+        if left[0] in range(0,8):
+            if left[1] in range(0,8):
+                if board.array[left[0]][left[1]]* board.array[location[0]][location[1]] <= 0:
+                    result.append(left)
+
+        right = (location[0],location[1] + 1)
+
+        if right[0] in range(0,8):
+            if right[1] in range(0,8):
+                if board.array[right[0]][right[1]]* board.array[location[0]][location[1]] <= 0:
+                    result.append(right)
+
+        up_left = (location[0]-1,location[1]-1)
+
+        if up_left[0] in range(0,8):
+            if up_left[1] in range(0,8):
+                if board.array[up_left[0]][up_left[1]]* board.array[location[0]][location[1]] <= 0:
+                    result.append(up_left)
+
+        up_right = (location[0]-1,location[1]+1)
+
+        if up_right[0] in range(0,8):
+            if up_right[1] in range(0,8):
+                if board.array[up_right[0]][up_right[1]]* board.array[location[0]][location[1]] <= 0:
+                    result.append(up_right)
+        
+        down_left = (location[0]+1,location[1]-1)
+
+        if down_left[0] in range(0,8):
+            if down_left[1] in range(0,8):
+                if board.array[down_left[0]][down_left[1]]* board.array[location[0]][location[1]] <= 0:
+                    result.append(down_left)
+        
+        down_right = (location[0]+1,location[1]+1)
+
+        if down_right[0] in range(0,8):
+            if down_right[1] in range(0,8):
+                if board.array[down_left[0]][down_left[1]]* board.array[location[0]][location[1]] <= 0:
+                    result.append(down_right)
+
+
         
 
 

@@ -39,10 +39,27 @@ class Board:
 class App:
     def __init__(self,board) -> None:
         self.root = Tk()
-        self.root.geometry('480x480')
+        self.root.geometry('520x590')
         self.root.title('chess board')
         self.root.resizable(False, False)
         self.board = board
+
+        self.turn = 'white'
+
+
+        self.moveLbl = Label(self.root,text='Move:')
+        self.moveLbl.place(relx=0.1,rely=0.9)
+
+        self.moveBtn = Button(self.root,command=self.Move,text='GO!')
+        self.moveBtn.place(relx=0.4,rely=0.9)
+
+        self.moveEntry = Entry(self.root,width=10)
+        self.moveEntry.place(relx=0.2,rely=0.9)
+
+        self.label = Label(self.root,text = 'a        b       c      d       e       f        g       h',font=('Ariel',18))
+        self.label.place(relx=0.05,rely=0.83)
+
+        
 
         self.Sprites = {
             1:'sprites/WPawn.png',
@@ -63,20 +80,50 @@ class App:
         self.canvasBody = Canvas(self.root,bg='dark grey',width=480,height=480)
         self.canvasBody.pack()
 
+    
+    def notationToLocation(self,notation:str):
+        from_ = notation[:2]
+        to_ = notation[3:]
+
+        from_ = (8 - int(from_[1]),ord(from_[0])-ord('a'))
+        to_ = (8 - int(to_[1]),ord(to_[0])-ord('a'))
+
+        return (from_,to_)
+    
+    def Move(self):
+        from_ , to_ = self.notationToLocation(self.moveEntry.get().strip())
+
+        types = {
+            1:pawn(self.turn),
+            2:Knight(self.turn),
+            6:King(self.turn)
+        }
+
+        piece = types[self.board.array[from_[0]][from_[1]]]
+        if to_ in piece.getPossibleMoves(self.board,from_):
+            self.board.array[to_[0]][to_[1]] = self.board.array[from_[0]][from_[1]]
+            self.board.array[from_[0]][from_[1]] = 0
+        
+
+        self.drawBoard(self.board)
+
+        self.board.prntBoard()
+
+
+        
+
     def highLightMovesForPiece(self,moves):
 
         self.canvasBody.delete('all')
         self.drawBoard(self.board)
         for move in moves:
-            self.canvasBody.create_rectangle(60*move[1],60*move[0],60*move[1]+60,60*move[0]+60,fill='green',stipple='gray50',outline='green')
+            self.canvasBody.create_rectangle(60*move[1],60*move[0],60*move[1]+60,60*move[0]+60,fill='red',stipple='gray50',outline='green')
 
 
     def drawBoard(self,Board):
         self.canvasBody.delete('all')
         self.drawTiles()
 
-        self.black = ImageTk.PhotoImage(Image.open('sprites/Bpawn.png'))
-        self.white = ImageTk.PhotoImage(Image.open('sprites/Wpawn.png'))
 
 
         self.imgs = {}
@@ -107,6 +154,7 @@ class App:
 
 
     def run(self):
+        game.drawBoard(self.board)
         self.root.mainloop()
 
 
@@ -119,10 +167,7 @@ board = Board()
 
 game = App(board)
 
-board.array[2][3] = 6
-game.drawBoard(board)
-possibleMoves = King('white').getPossibleMoves(board,(2,3))
-game.highLightMovesForPiece(possibleMoves)
+
 
 
 game.run()

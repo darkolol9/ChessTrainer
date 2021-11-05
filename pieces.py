@@ -174,6 +174,8 @@ class King:
                 if board.array[down_left[0]][down_left[1]]* board.array[location[0]][location[1]] <= 0:
                     result.append(down_right)
 
+        return result
+
 
         
 

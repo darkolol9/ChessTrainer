@@ -68,7 +68,7 @@ class App:
         self.canvasBody.delete('all')
         self.drawBoard(self.board)
         for move in moves:
-            self.canvasBody.create_rectangle(60*move[1],60*move[0],60*move[1]+60,60*move[0]+60,fill='green',outline='green')
+            self.canvasBody.create_rectangle(60*move[1],60*move[0],60*move[1]+60,60*move[0]+60,fill='green',stipple='gray50',outline='green')
 
 
     def drawBoard(self,Board):
@@ -119,13 +119,11 @@ board = Board()
 
 game = App(board)
 
-board.array[5][5] = 2
+board.array[2][3] = 6
 game.drawBoard(board)
-possibleMoves = Knight('white').getPossibleMoves(board,(5,5))
+possibleMoves = King('white').getPossibleMoves(board,(2,3))
 game.highLightMovesForPiece(possibleMoves)
 
-# which videos, why are u not studying?????
-# kobi kuzi........
 
 game.run()
 

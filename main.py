@@ -167,6 +167,10 @@ class App:
             for j in range(0,8):
                 if i % 2 == j % 2:
                     self.canvasBody.create_rectangle(60*i,60*j,60*i + 60,60*j + 60,fill='light gray',outline='light gray')
+        for i in range(0,8):
+            for j in range(0,8):
+                if j == 0:
+                    self.canvasBody.create_text(5,i*60+20,text=str(8 -i))
 
 
     def run(self):

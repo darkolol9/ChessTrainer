@@ -46,7 +46,6 @@ class App:
 
         self.turn = 'white'
 
-
         self.moveLbl = Label(self.root,text='Move:')
         self.moveLbl.place(relx=0.1,rely=0.9)
 
@@ -79,6 +78,15 @@ class App:
         #canvas
         self.canvasBody = Canvas(self.root,bg='dark grey',width=480,height=480)
         self.canvasBody.pack()
+
+        self.imgs = {}
+
+        for i in range(-6,0):
+            self.imgs[i] = ImageTk.PhotoImage(Image.open(self.Sprites[i]))
+        for i in range(1,7):
+            self.imgs[i] = ImageTk.PhotoImage(Image.open(self.Sprites[i]))
+        
+        
 
     
     def notationToLocation(self,notation:str):
@@ -124,7 +132,11 @@ class App:
         self.turn = 'black' if self.turn == 'white' else 'white'
 
 
-        
+    def clickPiece(self,event):
+
+        # self.highLightMovesForPiece()
+        pass
+
 
     def highLightMovesForPiece(self,moves,location):
 
@@ -136,29 +148,24 @@ class App:
             self.canvasBody.create_rectangle(60*move[1],60*move[0],60*move[1]+60,60*move[0]+60,fill='red',stipple='gray50',outline='red')
 
 
+
     def drawBoard(self,Board):
         self.canvasBody.delete('all')
         self.drawTiles()
 
-
-
-        self.imgs = {}
-
-
-        for i in range(-6,0):
-            self.imgs[i] = ImageTk.PhotoImage(Image.open(self.Sprites[i]))
-        for i in range(1,7):
-            self.imgs[i] = ImageTk.PhotoImage(Image.open(self.Sprites[i]))
-
+        objects = {}
 
         logicArray = Board.array
 
         for i in range(8):
             for j in range(8):
                 if logicArray[i][j] < 0:
-                    self.canvasBody.create_image(60*j+30,60*i+30,image=self.imgs[logicArray[i][j]])
+                    objects[(i,j)] = self.canvasBody.create_image(60*j+30,60*i+30,image=self.imgs[logicArray[i][j]])
                 if logicArray[i][j] > 0:
-                    self.canvasBody.create_image(60*j+30,60*i+30,image=self.imgs[logicArray[i][j]])
+                    objects[(i,j)] = self.canvasBody.create_image(60*j+30,60*i+30,image=self.imgs[logicArray[i][j]])
+
+        for key in objects:
+            self.canvasBody.tag_bind(objects[key],'<Button-1>',self.clickPiece)
 
 
     def drawTiles(self):
